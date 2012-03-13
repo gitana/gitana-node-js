@@ -1,1 +1,11 @@
-test
+Gitana Module for NodeJS
+
+This GitHub repository defines a NodeJS module for interaction with the Gitana Cloud CMS platform.
+This module packages up the existing Gitana JavaScript driver and makes it available via the Node JS module registry.
+
+There is no need to sync this repository and build it locally.
+If you'd like to access Gitana Cloud CMS within your Node JS application, just do the following:
+
+  require("gitana");
+
+That's it.

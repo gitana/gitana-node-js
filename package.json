@@ -10,12 +10,12 @@
   "engines": {
     "node": "~0.6.10"
   },
-  "dependencies": {},
+  "dependencies": { "xmlhttprequest": "1.3.0" },
   "devDependencies": {},
   "optionalDependencies": {},
   "contributors": [ 
     { "name": "Michael Uzquiano", "email": "uzi@cloudcms.com" }, 
-    { "name": "Yong u", "email": "drq@cloudcms.com" }
+    { "name": "Yong Qu", "email": "drq@cloudcms.com" }
   ],
   "keywords": ["cloudcms", "gitana", "cms", "content", "json", "rest"],
   "main": "index",
