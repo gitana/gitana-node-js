@@ -1,0 +1,23 @@
+{
+  "author": "Gitana Software, Inc. <info@cloudcms.com> (http://www.cloudcms.com)",
+  "name": "gitana",
+  "description": "Gitana NodeJS Module",
+  "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/gitana/gitana-node-js.git"
+  },
+  "engines": {
+    "node": "~0.6.10"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "optionalDependencies": {},
+  "contributors": [ 
+    { "name": "Michael Uzquiano", "email": "uzi@cloudcms.com" }, 
+    { "name": "Yong u", "email": "drq@cloudcms.com" }
+  ],
+  "keywords": ["cloudcms", "gitana", "cms", "content", "json", "rest"],
+  "main": "index",
+  "engines": { "node": ">= 0.4.1 < 0.7.0" }
+}
