@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/gitana/gitana-node-js.png)](http://travis-ci.org/gitana/gitana-node-js)
 Gitana Module for NodeJS
 
 This GitHub repository defines a NodeJS module for interaction with the Gitana Cloud CMS platform.
