@@ -1,11 +1,24 @@
-Gitana Module for NodeJS
+CloudCMS Module for NodeJS
 
-This GitHub repository defines a NodeJS module for interaction with the Gitana Cloud CMS platform.
-This module packages up the existing Gitana JavaScript driver and makes it available via the Node JS module registry.
+This GitHub repository defines a NodeJS module for interaction with the Cloud CMS platform.
+This module packages up the existing Cloud CMS JavaScript driver and makes it available via the Node JS module registry.
 
 There is no need to sync this repository and build it locally.
-If you'd like to access Gitana Cloud CMS within your Node JS application, just do the following:
+If you'd like to access Cloud CMS within your Node JS application, just do the following:
 
-  require("gitana");
+  require("cloudcms");
 
 That's it.
+
+To connect to Cloud CMS, use your client key/secret and authentication parameters:
+
+  platform = new Gitana({
+    "clientKey": "<clientKey>",
+    "clientSecret": "<clientSecret>",
+    "baseURL": "https://api.cloudcms.com"
+  }).authenticate({
+    "username": "<username>",
+    "password": "<password>"
+  });
+
+
