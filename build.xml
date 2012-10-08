@@ -1,12 +1,7 @@
 <?xml version='1.0'?>
 <project name="Gitana Node JS" basedir="." default="full">
 
-   <property name="version" value="1.0.0-SNAPSHOT"/>
-   <property name="gitana.js.version" value="1.0.1-SNAPSHOT"/>
-<!--
-   <property name="gitana.js.path" value="../gitana-javascript-driver/target/gitana-javascript-driver-${version}/js/gitana.min.js"/>
--->
-   <property name="gitana.js.path" value="../gitana-javascript-driver/target/gitana-javascript-driver-${gitana.js.version}/js/gitana.js"/>
+   <property name="gitana.js.path" value="../gitana-javascript-driver/build/package/js/gitana.js"/>
 
    <target name="clean">
        <delete failonerror="false">
