@@ -14,8 +14,8 @@ Gitana.DEFAULT_CONFIG = {
 Gitana.loadDefaultConfig = function() {
 
 	var defaultConfig = null;
-	if (fs.existsSync("gitana.json")) {
-		defaultConfig = JSON.parse(fs.readFileSync("gitana.json"));
+	if (fs.existsSync(__dirname + "/../../gitana.json")) {
+		defaultConfig = JSON.parse(fs.readFileSync(__dirname + "/../../gitana.json"));
 	}
 		
 	return defaultConfig;
