@@ -2,7 +2,7 @@
   "author": "Gitana Software, Inc. <info@cloudcms.com> (http://www.cloudcms.com)",
   "name": "gitana",
   "description": "Gitana Driver for Node JS",
-  "version": "0.1.6",
+  "version": "0.1.8",
   "repository": {
     "type": "git",
     "url": "git://github.com/gitana/gitana-node-js.git"
@@ -17,8 +17,7 @@
   "devDependencies": {},
   "optionalDependencies": {},
   "contributors": [ 
-    { "name": "Michael Uzquiano", "email": "uzi@cloudcms.com" }, 
-    { "name": "Yong Qu", "email": "drq@cloudcms.com" }
+    { "name": "Michael Uzquiano", "email": "uzi@cloudcms.com" }
   ],
   "keywords": ["gitana", "cloudcms", "cms", "content", "json", "rest", "mobile", "content management", "javascript"],
   "main": "index",
