@@ -1,7 +1,7 @@
 <?xml version='1.0'?>
 <project name="Gitana Node JS" basedir="." default="full">
 
-   <property name="gitana.js.path" value="../gitana-javascript-driver/build/package/js/gitana.js"/>
+   <property name="gitana.js.path" value="../gitana-javascript-driver/dist/gitana.js"/>
 
    <target name="clean">
        <delete failonerror="false">
