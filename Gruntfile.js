@@ -19,9 +19,16 @@ module.exports = function(grunt) {
         fs.writeFileSync("package.json", JSON.stringify(pkg, null, "    "));
 
 		// copy in the latest driver
-		fs.unlinkSync('lib/gitana.js');
+		if (fs.existsSync('lib/gitana.js'))
+		{
+			fs.unlinkSync('lib/gitana.js');			
+		}
 		grunt.file.copy('../gitana-javascript-driver/dist/gitana.js', 'lib/gitana.js');
-		fs.unlinkSync('lib/gitana.min.js');
+		
+		if (fs.existsSync('lib/gitana.min.js'))
+		{
+			fs.unlinkSync('lib/gitana.min.js');			
+		}
 		grunt.file.copy('../gitana-javascript-driver/dist/gitana.min.js', 'lib/gitana.min.js');
     });
 
