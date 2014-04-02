@@ -21,6 +21,8 @@ module.exports = function(grunt) {
 		// copy in the latest driver
 		fs.unlinkSync('lib/gitana.js');
 		grunt.file.copy('../gitana-javascript-driver/dist/gitana.js', 'lib/gitana.js');
+		fs.unlinkSync('lib/gitana.min.js');
+		grunt.file.copy('../gitana-javascript-driver/dist/gitana.min.js', 'lib/gitana.min.js');
     });
 
 };
