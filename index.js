@@ -17,8 +17,6 @@ Gitana.loadDefaultConfig = function() {
 		defaultConfig = JSON.parse(fs.readFileSync(configFilePath));
 	}
 
-	console.log("DEFAULT CONFIG: " + JSON.stringify(defaultConfig));
-		
 	return defaultConfig;
 };
 
