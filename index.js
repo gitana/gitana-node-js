@@ -7,14 +7,17 @@ Gitana.DEFAULT_CONFIG = {
 	"baseURL": "https://api.cloudcms.com"
 };
 
+var defaultConfig = null;
+
 // tell Gitana driver to load settings from an optional "gitana.json" file
 Gitana.loadDefaultConfig = function() {
 
-	var configFilePath = path.resolve(path.join(".", "gitana.json"));
+	if(defaultConfig == null) {
+		var configFilePath = path.resolve(path.join(".", "gitana.json"));
 
-	var defaultConfig = null;
-	if (fs.existsSync(configFilePath)) {
-		defaultConfig = JSON.parse(fs.readFileSync(configFilePath));
+		if (fs.existsSync(configFilePath)) {
+			defaultConfig = JSON.parse(fs.readFileSync(configFilePath));
+		}
 	}
 
 	return defaultConfig;
