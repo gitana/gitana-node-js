@@ -12,7 +12,8 @@ var defaultConfig = null;
 // tell Gitana driver to load settings from an optional "gitana.json" file
 Gitana.loadDefaultConfig = function() {
 
-	if(defaultConfig == null) {
+    if (!defaultConfig)
+    {
 		var configFilePath = path.resolve(path.join(".", "gitana.json"));
 
 		if (fs.existsSync(configFilePath)) {
