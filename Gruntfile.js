@@ -3,8 +3,6 @@ module.exports = function(grunt) {
     var fs = require("fs");
     var path = require("path");
 
-    grunt.loadNpmTasks('grunt-contrib');
-
     grunt.registerTask('default', ['update']);
 
     grunt.registerTask("update", "Updates the JS driver", function() {

@@ -14,8 +14,7 @@
         "xmlhttprequest": "*"
     },
     "devDependencies": {
-        "grunt": "*",
-        "grunt-contrib": "*"
+        "grunt": "*"
     },
     "optionalDependencies": {},
     "contributors": [
