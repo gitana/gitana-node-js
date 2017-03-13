@@ -1,6 +1,7 @@
 var Gitana = require("./lib/gitana");
 var fs = require("fs");
 var path = require("path");
+var request = require("request");
 
 // default settings so that we connect to Cloud CMS demo sandbox (by default)
 Gitana.DEFAULT_CONFIG = {
@@ -22,6 +23,35 @@ Gitana.loadDefaultConfig = function() {
 	}
 
 	return defaultConfig;
+};
+
+Gitana.streamUpload = function(driver, readStream, uploadUri, contentType, callback)
+{
+    var headers = {};
+    headers["Content-Type"] = contentType;
+    headers["Authorization"] = driver.getHttpHeaders()["Authorization"];
+
+    readStream.pipe(request({
+        "method": "POST", 
+        "url": uploadUri, 
+        "headers": headers, 
+        "timeout": 120 * 1000 // 2 minutes
+    }, function (err, httpResponse, body) {
+
+        if (err)
+        {
+            return callback(err);
+        }
+
+        if (httpResponse.statusCode >= 200 && httpResponse.statusCode <= 204)
+        {
+            return callback();
+        }
+
+        callback({
+            "message": "Status: " + httpResponse.statusCode + ", Message: " + body
+        });
+    }));    
 };
 
 module.exports = Gitana;
