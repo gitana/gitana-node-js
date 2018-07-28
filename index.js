@@ -54,4 +54,24 @@ Gitana.streamUpload = function(driver, readStream, uploadUri, contentType, callb
     }));    
 };
 
+Gitana.streamDownload = function(attachment, callback)
+{
+    var driver = attachment.getDriver();
+    
+    var headers = {};
+    headers["Authorization"] = driver.getHttpHeaders()["Authorization"];
+    
+    // download and pipe to stream
+    var stream = request({
+        "method": "GET", 
+        "url": attachment.getDownloadUri(), 
+        "headers": {
+            "Authorization": attachment.getDriver().getHttpHeaders()["Authorization"]
+        },
+        "timeout": 120 * 1000 // 2 minutes        
+    });
+    
+    callback(null, stream);
+};
+
 module.exports = Gitana;
