@@ -3,6 +3,15 @@ var fs = require("fs");
 var path = require("path");
 var request = require("request");
 
+var HttpsProxyAgent = require("https-proxy-agent");
+
+// support for environment variable "HTTP_PROXY" or "HTTPS_PROXY"
+var _httpProxy = process.env.http_proxy || process.env.HTTP_PROXY || process.env.https_proxy || process.env.HTTPS_PROXY;
+if (_httpProxy)
+{
+    console.log("Using http proxy: " + _httpProxy);
+}
+
 // default settings so that we connect to Cloud CMS demo sandbox (by default)
 Gitana.DEFAULT_CONFIG = {
 	"baseURL": "https://api.cloudcms.com"
@@ -73,5 +82,29 @@ Gitana.streamDownload = function(attachment, callback)
     
     callback(null, stream);
 };
+
+
+Gitana.HTTP_XHR_FACTORY = function()
+{
+    var XHR = null;
+    
+    if (!_httpProxy) 
+    {
+        // XHR library
+        var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+        XHR = new XMLHttpRequest();
+    }
+    else
+    {
+        // new XHR library
+        var XMLHttpRequest = require("node-http-xhr");
+        XHR = new XMLHttpRequest();
+
+        XHR._reqOpts.agent = new HttpsProxyAgent(_httpProxy);
+    }
+
+    return XHR;
+};
+
 
 module.exports = Gitana;
