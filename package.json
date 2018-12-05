@@ -11,15 +11,16 @@
         "node": ">= 0.4.1"
     },
     "dependencies": {
+    },
+    "devDependencies": {
+        "grunt": "*"
+    },
+    "optionalDependencies": {
         "https-proxy-agent": "^2.2.1",
         "node-http-xhr": "^1.3.4",
         "request": "*",
         "xmlhttprequest": "*"
     },
-    "devDependencies": {
-        "grunt": "*"
-    },
-    "optionalDependencies": {},
     "contributors": [
         {
             "name": "Michael Uzquiano",

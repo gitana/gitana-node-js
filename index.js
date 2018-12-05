@@ -1,15 +1,29 @@
 var Gitana = require("./lib/gitana");
-var fs = require("fs");
-var path = require("path");
-var request = require("request");
 
-var HttpsProxyAgent = require("https-proxy-agent");
+var isNode = function() {
+    var windowTest;
+    try {
+        //if window is declared thorugh JS DOM then window will be defined but will not be equal to this
+        windowTest = (this === window);
+    } catch(e) {
+        return true;
+    }
+      
+    try {
+        return (this===global) && !windowTest;
+    } catch(e) {
+        return false;
+    }
+}
 
-// support for environment variable "HTTP_PROXY" or "HTTPS_PROXY"
-var _httpProxy = process.env.http_proxy || process.env.HTTP_PROXY || process.env.https_proxy || process.env.HTTPS_PROXY;
-if (_httpProxy)
+var _safeRequire = function(name)
 {
-    console.log("Using http proxy: " + _httpProxy);
+    var x = null;
+    try {
+        x = require(name);
+    }
+    catch (e) { }
+    return x;
 }
 
 // default settings so that we connect to Cloud CMS demo sandbox (by default)
@@ -17,94 +31,109 @@ Gitana.DEFAULT_CONFIG = {
 	"baseURL": "https://api.cloudcms.com"
 };
 
-var defaultConfig = null;
-
-// tell Gitana driver to load settings from an optional "gitana.json" file
-Gitana.loadDefaultConfig = function() {
-
-    if (!defaultConfig)
-    {
-		var configFilePath = path.resolve(path.join(".", "gitana.json"));
-
-		if (fs.existsSync(configFilePath)) {
-			defaultConfig = JSON.parse(fs.readFileSync(configFilePath));
-		}
-	}
-
-	return defaultConfig;
-};
-
-Gitana.streamUpload = function(driver, readStream, uploadUri, contentType, callback)
+if (isNode())
 {
-    var headers = {};
-    headers["Content-Type"] = contentType;
-    headers["Authorization"] = driver.getHttpHeaders()["Authorization"];
+    var fs = _safeRequire("fs");
+    var path = _safeRequire("path");
+    var request = _safeRequire("request");
 
-    readStream.pipe(request({
-        "method": "POST", 
-        "url": uploadUri, 
-        "headers": headers, 
-        "timeout": 120 * 1000 // 2 minutes
-    }, function (err, httpResponse, body) {
+    var HttpsProxyAgent = _safeRequire("https-proxy-agent");
 
-        if (err)
+    // support for environment variable "HTTP_PROXY" or "HTTPS_PROXY"
+    var _httpProxy = process.env.http_proxy || process.env.HTTP_PROXY || process.env.https_proxy || process.env.HTTPS_PROXY;
+    if (_httpProxy)
+    {
+        console.log("Using http proxy: " + _httpProxy);
+    }
+
+
+    // support for loading "gitana.json" from optional file on disk
+    var defaultConfig = null;
+    Gitana.loadDefaultConfig = function() {
+
+        if (!defaultConfig)
         {
-            return callback(err);
+            var configFilePath = path.resolve(path.join(".", "gitana.json"));
+
+            if (fs.existsSync(configFilePath)) {
+                defaultConfig = JSON.parse(fs.readFileSync(configFilePath));
+            }
         }
 
-        if (httpResponse.statusCode >= 200 && httpResponse.statusCode <= 204)
-        {
-            return callback();
-        }
+        return defaultConfig;
+    };
 
-        callback({
-            "message": "Status: " + httpResponse.statusCode + ", Message: " + body
+    // support node streams for upload and download
+    Gitana.streamUpload = function(driver, readStream, uploadUri, contentType, callback)
+    {
+        var headers = {};
+        headers["Content-Type"] = contentType;
+        headers["Authorization"] = driver.getHttpHeaders()["Authorization"];
+
+        readStream.pipe(request({
+            "method": "POST", 
+            "url": uploadUri, 
+            "headers": headers, 
+            "timeout": 120 * 1000 // 2 minutes
+        }, function (err, httpResponse, body) {
+
+            if (err)
+            {
+                return callback(err);
+            }
+
+            if (httpResponse.statusCode >= 200 && httpResponse.statusCode <= 204)
+            {
+                return callback();
+            }
+
+            callback({
+                "message": "Status: " + httpResponse.statusCode + ", Message: " + body
+            });
+        }));    
+    };
+
+    Gitana.streamDownload = function(attachment, callback)
+    {
+        var driver = attachment.getDriver();
+        
+        var headers = {};
+        headers["Authorization"] = driver.getHttpHeaders()["Authorization"];
+        
+        // download and pipe to stream
+        var stream = request({
+            "method": "GET", 
+            "url": attachment.getDownloadUri(), 
+            "headers": {
+                "Authorization": attachment.getDriver().getHttpHeaders()["Authorization"]
+            },
+            "timeout": 120 * 1000 // 2 minutes        
         });
-    }));    
-};
+        
+        callback(null, stream);
+    };
 
-Gitana.streamDownload = function(attachment, callback)
-{
-    var driver = attachment.getDriver();
-    
-    var headers = {};
-    headers["Authorization"] = driver.getHttpHeaders()["Authorization"];
-    
-    // download and pipe to stream
-    var stream = request({
-        "method": "GET", 
-        "url": attachment.getDownloadUri(), 
-        "headers": {
-            "Authorization": attachment.getDriver().getHttpHeaders()["Authorization"]
-        },
-        "timeout": 120 * 1000 // 2 minutes        
-    });
-    
-    callback(null, stream);
-};
-
-
-Gitana.HTTP_XHR_FACTORY = function()
-{
-    var XHR = null;
-    
-    if (!_httpProxy) 
+    Gitana.HTTP_XHR_FACTORY = function()
     {
-        // XHR library
-        var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
-        XHR = new XMLHttpRequest();
-    }
-    else
-    {
-        // new XHR library
-        var XMLHttpRequest = require("node-http-xhr");
-        XHR = new XMLHttpRequest();
+        var XHR = null;
+        
+        if (!_httpProxy) 
+        {
+            // XHR library
+            var XMLHttpRequest = _safeRequire("xmlhttprequest").XMLHttpRequest;
+            XHR = new XMLHttpRequest();
+        }
+        else
+        {
+            // new XHR library
+            var XMLHttpRequest = _safeRequire("node-http-xhr");
+            XHR = new XMLHttpRequest();
 
-        XHR._reqOpts.agent = new HttpsProxyAgent(_httpProxy);
-    }
+            XHR._reqOpts.agent = new HttpsProxyAgent(_httpProxy);
+        }
 
-    return XHR;
-};
-
+        return XHR;
+    };
+}
 
 module.exports = Gitana;
