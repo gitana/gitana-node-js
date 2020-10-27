@@ -41,11 +41,6 @@ if (isNode())
 
     // support for environment variable "HTTP_PROXY" or "HTTPS_PROXY"
     var _httpProxy = process.env.http_proxy || process.env.HTTP_PROXY || process.env.https_proxy || process.env.HTTPS_PROXY;
-    if (_httpProxy)
-    {
-        console.log("Using http proxy: " + _httpProxy);
-    }
-
 
     // support for loading "gitana.json" from optional file on disk
     var defaultConfig = null;
