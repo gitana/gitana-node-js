@@ -35,7 +35,8 @@ if (isNode())
 {
     var fs = _safeRequire("fs");
     var path = _safeRequire("path");
-    var request = _safeRequire("request");
+    //var request = _safeRequire("request");
+    var request = require("./request");
 
     var HttpsProxyAgent = _safeRequire("https-proxy-agent");
 
@@ -65,9 +66,10 @@ if (isNode())
         headers["Content-Type"] = contentType;
         headers["Authorization"] = driver.getHttpHeaders()["Authorization"];
 
-        readStream.pipe(request({
+        request({
             "method": "POST", 
-            "url": uploadUri, 
+            "url": uploadUri,
+            "data": readStream,
             "headers": headers, 
             "timeout": 120 * 1000 // 2 minutes
         }, function (err, httpResponse, body) {
@@ -77,7 +79,7 @@ if (isNode())
                 return callback(err);
             }
 
-            if (httpResponse.statusCode >= 200 && httpResponse.statusCode <= 204)
+            if (httpResponse.status >= 200 && httpResponse.status <= 204)
             {
                 return callback();
             }
@@ -85,7 +87,7 @@ if (isNode())
             callback({
                 "message": "Status: " + httpResponse.statusCode + ", Message: " + body
             });
-        }));    
+        });
     };
 
     Gitana.streamDownload = function(attachment, callback)
@@ -96,16 +98,21 @@ if (isNode())
         headers["Authorization"] = driver.getHttpHeaders()["Authorization"];
         
         // download and pipe to stream
-        var stream = request({
+        request({
             "method": "GET", 
             "url": attachment.getDownloadUri(), 
             "headers": {
                 "Authorization": attachment.getDriver().getHttpHeaders()["Authorization"]
             },
             "timeout": 120 * 1000 // 2 minutes        
+        }, function (err, response) {
+    
+            if (err) {
+                return callback(err);
+            }
+            
+            callback(null, response.data);
         });
-        
-        callback(null, stream);
     };
 
     Gitana.HTTP_XHR_FACTORY = function()
