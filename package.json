@@ -2,7 +2,7 @@
     "author": "Gitana Software, Inc. <info@gitana.io> (https://gitana.io)",
     "name": "gitana",
     "description": "Gitana Cloud CMS Driver for Node JS",
-    "version": "1.0.326",
+    "version": "1.0.330",
     "repository": {
         "type": "git",
         "url": "git://github.com/gitana/gitana-node-js.git"
