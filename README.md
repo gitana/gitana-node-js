@@ -30,6 +30,7 @@ To learn more, please see:
 
 https://github.com/gitana/gitana-javascript-driver
 
+## Documentation
 
-
+Please visit https://gitana.io for documentation.
 
